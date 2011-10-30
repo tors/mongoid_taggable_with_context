@@ -41,6 +41,11 @@ describe Mongoid::TaggableWithContext do
       @m.artists = "some new tag"
       @m.artists_array.should == %w[some new tag]
     end
+    
+    it "should set artists array from array" do
+      @m.artists = %w[some new tag]
+      @m.artists_array.should == %w[some new tag]
+    end
 
     it "should retrieve tags string from array" do
       @m.tags_array = %w[some new tags]

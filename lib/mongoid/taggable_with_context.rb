@@ -84,7 +84,13 @@ module Mongoid::TaggableWithContext
       class_eval <<-END
         def #{tags_field}=(s)
           super
-          write_attribute(:#{tags_array_field}, convert_string_to_array(s, get_tag_separator_for(:"#{tags_field}")))
+          tags_array_value = 
+            if s.is_a?(Array)
+              s.map(&:strip).uniq.compact
+            else
+              convert_string_to_array(s, get_tag_separator_for(:"#{tags_field}"))
+            end
+          write_attribute(:#{tags_array_field}, tags_array_value)
         end
         
         def #{tags_array_field}=(a)
